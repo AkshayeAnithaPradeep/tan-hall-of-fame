@@ -1,0 +1,11 @@
+import I1 from "./1.jpg"
+import I2 from "./2.jpg"
+import I3 from "./3.jpg"
+import I4 from "./4.jpg"
+import I5 from "./5.jpg"
+import I6 from "./6.jpg"
+import I7 from "./7.jpg"
+
+export {
+    I1, I2, I3, I4, I5, I6, I7
+}
