@@ -13,9 +13,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from "@material-ui/core/Button";
 import {I1, I2, I3, I4, I5, I6, I7} from "./images"
-import { API } from 'aws-amplify';
+import Amplify, { API } from 'aws-amplify';
 import { listMessages } from './graphql/queries';
 import { createMessage as createMessageMutation, deleteMessage as deleteMessageMutation } from './graphql/mutations';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const initialFormState = { name: '', message: '' }
+const initialFormState = { name: '', description: '' }
 
 export default function App() {
     const classes = useStyles()
@@ -111,7 +113,7 @@ export default function App() {
                         label="Note"
                         fullWidth
                         multiline
-                        onChange={e => setFormData({ ...formData, 'message': e.target.value})}
+                        onChange={e => setFormData({ ...formData, 'description': e.target.value})}
                     />
                     <TextField
                         margin="dense"

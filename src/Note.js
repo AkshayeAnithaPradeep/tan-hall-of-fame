@@ -39,7 +39,7 @@ export default function Note(props) {
         <Paper elevation={3} className={classes.note}>
             <div className={classes.noteMessage}>
                 <Typography variant="h4" gutterBottom>
-                    {props.note.message}
+                    {props.note.description}
                 </Typography>
             </div>
             <div className={classes.noteAuthor}>
