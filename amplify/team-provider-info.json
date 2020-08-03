@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-tanhof-dev-162609-authRole",
+            "UnauthRoleArn": "arn:aws:iam::976681090932:role/amplify-tanhof-dev-162609-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::976681090932:role/amplify-tanhof-dev-162609-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-tanhof-dev-162609-deployment",
+            "UnauthRoleName": "amplify-tanhof-dev-162609-unauthRole",
+            "StackName": "amplify-tanhof-dev-162609",
+            "StackId": "arn:aws:cloudformation:us-west-2:976681090932:stack/amplify-tanhof-dev-162609/f41e3b70-d5cf-11ea-9520-06d54ad4c402",
+            "AmplifyAppId": "d3876nbk0vnjw"
+        }
+    }
+}

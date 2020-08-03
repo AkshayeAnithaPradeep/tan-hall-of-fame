@@ -13,7 +13,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from "@material-ui/core/Button";
 import {I1, I2, I3, I4, I5, I6, I7} from "./images"
-import axios from 'axios'
+import { API } from 'aws-amplify';
+import { listMessages } from './graphql/queries';
+import { createMessage as createMessageMutation, deleteMessage as deleteMessageMutation } from './graphql/mutations';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const initialFormState = { name: '', message: '' }
 
 export default function App() {
     const classes = useStyles()
@@ -41,8 +44,7 @@ export default function App() {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
-    const [message, setMessage] = useState("");
-    const [name, setName] = useState("");
+    const [formData, setFormData] = useState(initialFormState);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -52,46 +54,28 @@ export default function App() {
         setOpen(false);
     };
 
-    const handleSubmit = () => {
-        axios.post('http://localhost:3000/notes', {
-            message: message,
-            name: name
-        }).then(resp => {
-            setMessage("");
-            setName("");
-            fetchNotes();
-        }).catch(error => {
-            console.log(error);
-        });
+    const handleSubmit = async() => {
+        if (!formData.name || !formData.description) return;
+        await API.graphql({ query: createMessageMutation, variables: { input: formData } });
+        setNotes([ ...notes, formData ]);
+        setFormData(initialFormState);
         setOpen(false);
     };
 
-    const fetchNotes = () => {
+    const fetchNotes = async() => {
         setLoading(true)
-        fetch('http://localhost:3000/notes')
-            .then(response => response.json())
-            .then(data => {
-                // console.log(data);
-                setNotes(data);
-                setLoading(false)
-            });
+        const apiData = await API.graphql({ query: listMessages });
+        setLoading(false)
+        setNotes(apiData.data.listMessages.items);
     }
 
     useEffect(() => {
         let s;
-        fetchNotes();
+        fetchNotes().then();
         s = setInterval(() => {
             setCount(state => (state +1));
         }, 8000);
     }, []);
-
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    }
-
-    const handleMessageChange = (event) => {
-        setMessage(event.target.value);
-    }
 
     return (
         <div className={classes.root} id="root">
@@ -127,7 +111,7 @@ export default function App() {
                         label="Note"
                         fullWidth
                         multiline
-                        onChange={handleMessageChange}
+                        onChange={e => setFormData({ ...formData, 'message': e.target.value})}
                     />
                     <TextField
                         margin="dense"
@@ -135,7 +119,7 @@ export default function App() {
                         label="Name"
                         type="name"
                         fullWidth
-                        onChange={handleNameChange}
+                        onChange={e => setFormData({ ...formData, 'name': e.target.value})}
                     />
                     <DialogContentText>
                         Enter your name, nickname or however you want Tanya to remember you.
