@@ -16,6 +16,7 @@ import {I1, I2, I3, I4, I5, I6, I7} from "./images"
 import Amplify, { API } from 'aws-amplify';
 import { listMessages } from './graphql/queries';
 import { createMessage as createMessageMutation } from './graphql/mutations';
+import { useMediaQuery } from 'react-responsive'
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
@@ -42,11 +43,17 @@ const initialFormState = { name: '', description: '' }
 export default function App() {
     const classes = useStyles()
     const [count, setCount] = useState(0)
-    const Images = [I1, I2, I3, I4, I5, I6, I7]
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    let Images = []
+    if(isTabletOrMobile){
+        Images = [I4, I6, I7]
+    } else {
+        Images = [I1, I2, I3, I5]
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -74,15 +81,15 @@ export default function App() {
     useEffect(() => {
         let s;
         fetchNotes().then();
-        s = setInterval(() => {
-            setCount(state => (state +1));
-        }, 8000);
+        // s = setInterval(() => {
+        //     setCount(state => (state +1));
+        // }, 8000);
     }, []);
 
     return (
         <div className={classes.root} id="root">
             <div className={classes.canvas} id={"canvas"} style={{
-                backgroundImage: `url(${Images[count%7]})`,
+                backgroundImage: `url(${isTabletOrMobile? I7: I2})`,
                 backgroundSize: "cover",
                 opacity: 0.5,
                 top: 0,
@@ -90,8 +97,7 @@ export default function App() {
                 bottom: 0,
                 right: 0,
                 position: 'fixed',
-                zIndex: -1,
-                transition: "background-image 0.5s ease-in"
+                zIndex: -1
             }}/>
             <CssBaseline/>
             <NavBar />
