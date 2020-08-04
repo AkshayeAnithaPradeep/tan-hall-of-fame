@@ -21,7 +21,7 @@ const theme = createMuiTheme({
         h2: {
             fontFamily: "'Acme', sans-serif"
         },
-        h4: {
+        h6: {
             fontFamily: `'Indie Flower', cursive !important`
         },
         subtitle2: {

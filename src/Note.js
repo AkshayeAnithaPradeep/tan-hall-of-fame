@@ -16,7 +16,6 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
     note: {
         width: theme.spacing(50),
-        height: theme.spacing(30),
         margin: theme.spacing(2),
         display: "flex",
         flexFlow: "column nowrap",
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     noteMessage: {
         flexGrow: 5,
         color: "black",
-        padding: theme.spacing(2.5),
+        padding: `0 ${theme.spacing(2.5)}px`,
         textAlign: "center",
         transform: "rotate(3deg)"
     },
@@ -43,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 0.5,
         display: "flex",
         justifyContent: "flex-end"
+    },
+    actionButton: {
+        padding: theme.spacing(1)
     }
 }));
 
@@ -63,7 +65,7 @@ export default function Note(props) {
     return (
         <Paper elevation={3} className={classes.note}>
             <div className={classes.actionItems}>
-                <IconButton aria-label="delete" onClick={handleClickOpen}>
+                <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.actionButton}>
                     <EditIcon  />
                 </IconButton>
                 <IconButton aria-label="delete" onClick={handleClickOpen}>
@@ -71,7 +73,7 @@ export default function Note(props) {
                 </IconButton>
             </div>
             <div className={classes.noteMessage}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     {props.note.description}
                 </Typography>
             </div>
