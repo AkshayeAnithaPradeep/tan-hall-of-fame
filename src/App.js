@@ -1,4 +1,4 @@
-import React, {ReactDOM, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import NavBar from "./NavBar";
@@ -15,7 +15,7 @@ import Button from "@material-ui/core/Button";
 import {I1, I2, I3, I4, I5, I6, I7} from "./images"
 import Amplify, { API } from 'aws-amplify';
 import { listMessages } from './graphql/queries';
-import { createMessage as createMessageMutation, deleteMessage as deleteMessageMutation } from './graphql/mutations';
+import { createMessage as createMessageMutation } from './graphql/mutations';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 

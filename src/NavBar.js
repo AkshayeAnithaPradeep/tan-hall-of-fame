@@ -25,7 +25,7 @@ export default function NavBar() {
     return (
         <div className={classes.root}>
             <Typography variant="h2" className={classes.title}>
-                Tanya's Hall of Fame
+                Mac 'n' Cheese for Tanya
             </Typography>
         </div>
     );
