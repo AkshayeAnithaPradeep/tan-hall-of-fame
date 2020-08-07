@@ -61,6 +61,17 @@ export default function Note(props) {
         setOpen(false);
     };
 
+    let NoteMessage;
+    if (props.note.name === "Neethi Again") {
+        NoteMessage = <Typography variant="h6" gutterBottom>
+                        <pre>{props.note.description}</pre>
+                    </Typography>;
+    } else {
+        NoteMessage = <Typography variant="h6" gutterBottom>
+                        {props.note.description}
+                    </Typography>;
+    }
+
 
     return (
         <Paper elevation={3} className={classes.note}>
@@ -73,9 +84,7 @@ export default function Note(props) {
                 </IconButton>
             </div>
             <div className={classes.noteMessage}>
-                <Typography variant="h6" gutterBottom>
-                    {props.note.description}
-                </Typography>
+                {NoteMessage}
             </div>
             <div className={classes.noteAuthor}>
                 <Typography variant="subtitle2" gutterBottom>
