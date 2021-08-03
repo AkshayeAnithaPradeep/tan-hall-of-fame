@@ -130,7 +130,7 @@ export default function App() {
                         onChange={e => setFormData({ ...formData, 'name': e.target.value})}
                     />
                     <DialogContentText>
-                        Enter your name, nickname or however you want Tanya to remember you.
+                        Enter your name, nickname or however you want Tanya to remember you. okay?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
