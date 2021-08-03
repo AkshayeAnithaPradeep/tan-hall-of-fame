@@ -13,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
         position: "fixed",
         width: "100%",
         zIndex: 10,
-        top: 77
+        top: 77,
+        [theme.breakpoints.down('sm')]: {
+            top: 149,
+        }
     },
     selected: {
         backgroundColor: "white",
@@ -24,7 +27,9 @@ const useStyles = makeStyles((theme) => ({
     buttonContainer: {
         width: 200,
         margin: "auto",
-        padding: 5
+        padding: 5,
+        display: "flex",
+        justifyContent: "space-evenly"
     },
     title: {
         flexGrow: 1,

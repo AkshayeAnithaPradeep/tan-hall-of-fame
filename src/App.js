@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
     },
     extendedIcon: {
         marginRight: theme.spacing(1),
-    },
-    canvas: {
-
     }
 }));
 
@@ -106,7 +103,8 @@ export default function App() {
                 bottom: 0,
                 right: 0,
                 position: 'fixed',
-                zIndex: -1
+                zIndex: -1,
+                backgroundPositionX: "center"
             }}/>
             <CssBaseline/>
             <NavBar />
