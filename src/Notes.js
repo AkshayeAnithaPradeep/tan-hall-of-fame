@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: "wrap",
         justifyContent: "space-around",
         marginBottom: theme.spacing(10),
-        marginTop: theme.spacing(15),
+        marginTop: theme.spacing(20),
         [theme.breakpoints.down('sm')]: {
-            marginTop: theme.spacing(20),
+            marginTop: theme.spacing(25),
         },
     },
     title: {

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import NavBar from "./NavBar";
+import YearSelector from "./YearSelector";
 import Notes from "./Notes";
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -42,11 +43,11 @@ const initialFormState = { name: '', description: '' }
 
 export default function App() {
     const classes = useStyles()
-    const [count, setCount] = useState(0)
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
+    const [selectedYear, setSelectedYear] = useState(2021);
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     let Images = []
     if(isTabletOrMobile){
@@ -66,6 +67,7 @@ export default function App() {
     const handleSubmit = async() => {
         if (!formData.name || !formData.description) return;
         await API.graphql({ query: createMessageMutation, variables: { input: formData } });
+        formData["createdAt"] = new Date();
         setNotes([ ...notes, formData ]);
         setFormData(initialFormState);
         setOpen(false);
@@ -75,16 +77,23 @@ export default function App() {
         setLoading(true)
         const apiData = await API.graphql({ query: listMessages });
         setLoading(false)
-        setNotes(apiData.data.listMessages.items);
+        await setNotes(apiData.data.listMessages.items);
     }
 
     useEffect(() => {
         let s;
-        fetchNotes().then();
+        fetchNotes().then(() => {
+            console.log(notes)
+        });
         // s = setInterval(() => {
         //     setCount(state => (state +1));
         // }, 8000);
     }, []);
+
+    const filterNotes = (note) => {
+        let noteCreated = new Date(note.createdAt);
+        return noteCreated.getFullYear() === selectedYear
+    }
 
     return (
         <div className={classes.root} id="root">
@@ -101,7 +110,8 @@ export default function App() {
             }}/>
             <CssBaseline/>
             <NavBar />
-            <Notes notes={notes} loading={loading}/>
+            <YearSelector selectedYear={selectedYear} setSelectedYear={setSelectedYear}/>
+            <Notes notes={notes.filter(filterNotes)} loading={loading}/>
             <Fab variant="extended" color="primary" aria-label="add" className={classes.add} onClick={handleClickOpen}>
                 <AddIcon className={classes.extendedIcon} />
                 Add new note
