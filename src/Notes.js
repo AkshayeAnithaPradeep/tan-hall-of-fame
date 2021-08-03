@@ -19,11 +19,14 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "space-around",
-        marginBottom: theme.spacing(10),
+        paddingBottom: theme.spacing(10),
         marginTop: theme.spacing(20),
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down(572)]: {
             marginTop: theme.spacing(25),
         },
+        [theme.breakpoints.down(345)]: {
+            marginTop: theme.spacing(35),
+        }
     },
     title: {
         flexGrow: 1,

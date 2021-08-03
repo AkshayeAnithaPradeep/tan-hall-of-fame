@@ -19,20 +19,17 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(2),
         display: "flex",
         flexFlow: "column nowrap",
-        backgroundColor: "#ead454",
-        transform: "rotate(-3deg)"
+        backgroundColor: "#ead454"
     },
     noteMessage: {
         flexGrow: 5,
         color: "black",
         padding: `0 ${theme.spacing(2.5)}px`,
-        textAlign: "center",
-        transform: "rotate(3deg)"
+        textAlign: "center"
     },
     noteAuthor: {
         flexGrow: 1,
         padding: theme.spacing(1),
-        transform: "rotate(3deg)",
         color: "black"
     },
     heart: {

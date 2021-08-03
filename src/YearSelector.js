@@ -1,8 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles} from '@material-ui/core/styles';
 import CheeseImage from './cheese.jpg';
-import {ButtonGroup} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,9 +12,13 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         zIndex: 10,
         top: 77,
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down(572)]: {
             top: 149,
+        },
+        [theme.breakpoints.down(345)]: {
+            top: 221,
         }
+
     },
     selected: {
         backgroundColor: "white",
