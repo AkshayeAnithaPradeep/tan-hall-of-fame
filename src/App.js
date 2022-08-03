@@ -44,7 +44,7 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
-    const [selectedYear, setSelectedYear] = useState(2021);
+    const [selectedYear, setSelectedYear] = useState(2022);
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
     const handleClickOpen = () => {
