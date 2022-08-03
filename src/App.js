@@ -13,7 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from "@material-ui/core/Button";
-import {I8, I9} from "./images"
+import {I1, I2, I3, I4, I5, I6} from "./images"
 import Amplify, { API } from 'aws-amplify';
 import { listMessages } from './graphql/queries';
 import { createMessage as createMessageMutation } from './graphql/mutations';
@@ -45,7 +45,7 @@ export default function App() {
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
     const [selectedYear, setSelectedYear] = useState(2022);
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -80,10 +80,23 @@ export default function App() {
         return noteCreated.getFullYear() === selectedYear
     }
 
+    const pickBackgroundImage = () => {
+        switch (selectedYear) {
+            case 2022:
+                return isTabletOrMobile ? I6 : I5;
+            case 2021:
+                return isTabletOrMobile ? I4 : I3;
+            case 2020:
+                return isTabletOrMobile ? I2 : I1;
+            default:
+                return isTabletOrMobile ? I2 : I1;
+        }
+    }
+
     return (
         <div className={classes.root} id="root">
             <div className={classes.canvas} id={"canvas"} style={{
-                backgroundImage: `url(${isTabletOrMobile? I8: I9})`,
+                backgroundImage: `url(${pickBackgroundImage()})`,
                 backgroundSize: "cover",
                 opacity: 0.5,
                 top: 0,
