@@ -49,6 +49,7 @@ export default function YearSelector(props) {
     return (
         <div className={classes.root}>
             <div className={classes.buttonContainer}>
+                <Button id="button-2023" className={[props.selectedYear === 2023 ? classes.selected : false, classes.yearButton]} onClick={() => handleClick(2023)}> 2023 </Button>
                 <Button id="button-2022" className={[props.selectedYear === 2022 ? classes.selected : false, classes.yearButton]} onClick={() => handleClick(2022)}> 2022 </Button>
                 <Button id="button-2021" className={[props.selectedYear === 2021 ? classes.selected : false, classes.yearButton]} onClick={() => handleClick(2021)}> 2021 </Button>
                 <Button id="button-2020" className={[props.selectedYear === 2020 ? classes.selected : false, classes.yearButton]} onClick={() => handleClick(2020)}> 2020 </Button>

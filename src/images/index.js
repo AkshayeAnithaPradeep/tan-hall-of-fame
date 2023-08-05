@@ -4,7 +4,9 @@ import I3 from "./3.jpg"
 import I4 from "./4.jpg"
 import I5 from "./5.jpg"
 import I6 from "./6.jpg"
+import I7 from "./7.jpg"
+import I8 from "./8.jpg"
 
 export {
-    I1, I2, I3, I4, I5, I6
+    I1, I2, I3, I4, I5, I6, I7, I8
 }

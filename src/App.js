@@ -13,8 +13,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from "@material-ui/core/Button";
-import {I1, I2, I3, I4, I5, I6} from "./images"
-import Amplify, { API } from 'aws-amplify';
+import {I1, I2, I3, I4, I5, I6, I7, I8} from "./images"
+import { Amplify, API } from 'aws-amplify';
 import { listMessages } from './graphql/queries';
 import { createMessage as createMessageMutation } from './graphql/mutations';
 import { useMediaQuery } from 'react-responsive'
@@ -44,7 +44,7 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
-    const [selectedYear, setSelectedYear] = useState(2022);
+    const [selectedYear, setSelectedYear] = useState(2023);
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
     const handleClickOpen = () => {
@@ -82,6 +82,8 @@ export default function App() {
 
     const pickBackgroundImage = () => {
         switch (selectedYear) {
+            case 2023:
+                return isTabletOrMobile ? I7 : I8;
             case 2022:
                 return isTabletOrMobile ? I6 : I5;
             case 2021:
