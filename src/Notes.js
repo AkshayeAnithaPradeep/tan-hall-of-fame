@@ -104,7 +104,7 @@ export default function Notes(props) {
             {/* <div className={classes.cat} id='cat-container'>
                 <img id="cat" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif"/>
             </div> */}
-            <motion.div className={classes.cat} ref={scope} style={{top: posY}} onClick={playMeow}>
+            <motion.div className={classes.cat} ref={scope} style={{top: posY, '-webkit-tap-highlight-color': 'rgba(0,0,0,0)', '-webkit-tap-highlight-color': 'transparent'}} onClick={playMeow}>
                 <img id="cat" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif"/>
             </motion.div >
             <audio id="audio" src={meow}></audio>
