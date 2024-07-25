@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     buttonContainer: {
-        width: 200,
+        width: "100%",
         margin: "auto",
         padding: 5,
         display: "flex",

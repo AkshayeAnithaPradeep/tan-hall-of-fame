@@ -19,7 +19,13 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(2),
         display: "flex",
         flexFlow: "column nowrap",
-        backgroundColor: "#ead454"
+        backgroundColor: "#ead454",
+        [theme.breakpoints.down('sm')]: {
+            width: theme.spacing(40),
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: theme.spacing(30),
+        }
     },
     noteMessage: {
         flexGrow: 5,
