@@ -15,7 +15,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        textAlign: "center"
+        textAlign: "center",
+        [theme.breakpoints.down(572)]: {
+            fontSize: "2rem"
+        }
     },
 }));
 

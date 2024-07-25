@@ -20,10 +20,13 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexFlow: "column nowrap",
         backgroundColor: "#ead454",
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down(800)]: {
+            width: theme.spacing(38),
+        },
+        [theme.breakpoints.down(600)]: {
             width: theme.spacing(40),
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down(350)]: {
             width: theme.spacing(30),
         }
     },

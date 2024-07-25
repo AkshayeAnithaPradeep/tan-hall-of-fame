@@ -13,12 +13,8 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 10,
         top: 77,
         [theme.breakpoints.down(572)]: {
-            top: 149,
-        },
-        [theme.breakpoints.down(345)]: {
-            top: 221,
+            top: 43,
         }
-
     },
     selected: {
         backgroundColor: "white",
