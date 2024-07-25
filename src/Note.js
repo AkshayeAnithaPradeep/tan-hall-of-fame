@@ -11,7 +11,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from "@material-ui/core/Button";
-
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 const useStyles = makeStyles((theme) => ({
     note: {
@@ -42,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     },
     actionButton: {
         padding: theme.spacing(1)
+    },
+    imageWrapper: {
+    },
+    noteImage: {
+        maxWidth: "400px",
+        padding: "25px"
     }
 }));
 
@@ -49,6 +55,7 @@ export default function Note(props) {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
+    const [noteimage, setNoteimage] = React.useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -68,7 +75,7 @@ export default function Note(props) {
                         {props.note.description}
                     </Typography>;
     }
-
+    
 
     return (
         <Paper elevation={3} className={classes.note}>
@@ -83,6 +90,14 @@ export default function Note(props) {
             <div className={classes.noteMessage}>
                 {NoteMessage}
             </div>
+            <PhotoProvider>
+                <PhotoView src={props.note.image}>
+                    <img src={props.note.image} alt="" />
+                </PhotoView>
+            </PhotoProvider>
+            {/* <div className={classes.imageWrapper}>
+                <img className={classes.noteImage} src={props.note.image}></img>
+            </div> */}
             <div className={classes.noteAuthor}>
                 <Typography variant="subtitle2" gutterBottom>
                     With <img className={classes.heart} src={HeartImage} alt=""></img> by {props.note.name}

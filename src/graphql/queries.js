@@ -7,8 +7,10 @@ export const getMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -23,10 +25,13 @@ export const listMessages = /* GraphQL */ `
         id
         name
         description
+        image
         createdAt
         updatedAt
+        __typename
       }
       nextToken
+      __typename
     }
   }
 `;

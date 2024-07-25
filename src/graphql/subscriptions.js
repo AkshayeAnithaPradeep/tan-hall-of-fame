@@ -7,8 +7,10 @@ export const onCreateMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -18,8 +20,10 @@ export const onUpdateMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -29,8 +33,10 @@ export const onDeleteMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;

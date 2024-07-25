@@ -10,8 +10,10 @@ export const createMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -24,8 +26,10 @@ export const updateMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -38,8 +42,10 @@ export const deleteMessage = /* GraphQL */ `
       id
       name
       description
+      image
       createdAt
       updatedAt
+      __typename
     }
   }
 `;

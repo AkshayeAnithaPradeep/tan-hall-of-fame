@@ -1,5 +1,6 @@
 {
-    "AppSyncApiName": "tanhof",
-    "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": false
+  "AppSyncApiName": "tanhof",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2024-07-25T16:10:13.271Z"
 }
