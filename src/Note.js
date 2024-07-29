@@ -84,6 +84,15 @@ export default function Note (props) {
         </Typography>;
     }
 
+    let NotePhoto = '';
+    if (props.note.image) {
+        NotePhoto = <PhotoProvider>
+            <PhotoView src={props.note.image}>
+                <img src={props.note.image} alt="" />
+            </PhotoView>
+        </PhotoProvider>;
+    }
+
     return (
         <Paper elevation={3} className={classes.note}>
             <div className={classes.actionItems}>
@@ -101,14 +110,7 @@ export default function Note (props) {
             <div className={classes.noteMessage}>
                 {NoteMessage}
             </div>
-            <PhotoProvider>
-                <PhotoView src={props.note.image}>
-                    <img src={props.note.image} alt="" />
-                </PhotoView>
-            </PhotoProvider>
-            {/* <div className={classes.imageWrapper}>
-                <img className={classes.noteImage} src={props.note.image}></img>
-            </div> */}
+            {NotePhoto}
             <div className={classes.noteAuthor}>
                 <Typography variant="subtitle2" gutterBottom>
                     With <img className={classes.heart} src={HeartImage} alt=""></img> by {props.note.name}
