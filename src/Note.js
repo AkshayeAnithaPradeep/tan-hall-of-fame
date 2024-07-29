@@ -1,53 +1,53 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from "@material-ui/core/Typography";
-import HeartImage from "./love.png"
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Button from "@material-ui/core/Button";
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import HeartImage from './love.png';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import Button from '@mui/material/Button';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 const useStyles = makeStyles((theme) => ({
     note: {
         width: theme.spacing(50),
         margin: theme.spacing(2),
-        display: "flex",
-        flexFlow: "column nowrap",
-        backgroundColor: "#ead454",
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        backgroundColor: '#ead454',
         [theme.breakpoints.down(800)]: {
-            width: theme.spacing(38),
+            width: theme.spacing(38)
         },
         [theme.breakpoints.down(600)]: {
-            width: theme.spacing(40),
+            width: theme.spacing(40)
         },
         [theme.breakpoints.down(350)]: {
-            width: theme.spacing(30),
+            width: theme.spacing(30)
         }
     },
     noteMessage: {
         flexGrow: 5,
-        color: "black",
-        padding: `0 ${theme.spacing(2.5)}px`,
-        textAlign: "center"
+        color: 'black',
+        padding: `0 ${theme.spacing(2.5)}`,
+        textAlign: 'center'
     },
     noteAuthor: {
         flexGrow: 1,
         padding: theme.spacing(1),
-        color: "black"
+        color: 'black'
     },
     heart: {
         width: theme.spacing(2.5)
     },
     actionItems: {
         flexGrow: 0.5,
-        display: "flex",
-        justifyContent: "flex-end"
+        display: 'flex',
+        justifyContent: 'flex-end'
     },
     actionButton: {
         padding: theme.spacing(1)
@@ -55,16 +55,15 @@ const useStyles = makeStyles((theme) => ({
     imageWrapper: {
     },
     noteImage: {
-        maxWidth: "400px",
-        padding: "25px"
+        maxWidth: '400px',
+        padding: '25px'
     }
 }));
 
-export default function Note(props) {
+export default function Note (props) {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
-    const [noteimage, setNoteimage] = React.useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -75,24 +74,27 @@ export default function Note(props) {
     };
 
     let NoteMessage;
-    if (props.note.name === "Neethi Again") {
+    if (props.note.name === 'Neethi Again') {
         NoteMessage = <Typography variant="h6" gutterBottom>
-                        <pre>{props.note.description}</pre>
-                    </Typography>;
+            <pre>{props.note.description}</pre>
+        </Typography>;
     } else {
         NoteMessage = <Typography variant="h6" gutterBottom>
-                        {props.note.description}
-                    </Typography>;
+            {props.note.description}
+        </Typography>;
     }
-    
 
     return (
         <Paper elevation={3} className={classes.note}>
             <div className={classes.actionItems}>
-                <IconButton aria-label="delete" onClick={handleClickOpen} className={classes.actionButton}>
-                    <EditIcon  />
+                <IconButton
+                    aria-label="delete"
+                    onClick={handleClickOpen}
+                    className={classes.actionButton}
+                    size="large">
+                    <EditIcon />
                 </IconButton>
-                <IconButton aria-label="delete" onClick={handleClickOpen}>
+                <IconButton aria-label="delete" onClick={handleClickOpen} size="large">
                     <DeleteIcon />
                 </IconButton>
             </div>

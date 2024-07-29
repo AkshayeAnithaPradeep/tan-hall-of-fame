@@ -1,23 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import NavBar from "./NavBar";
-import YearSelector from "./YearSelector";
-import Notes from "./Notes";
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from "@material-ui/core/Button";
-import {I1, I2, I3, I4, I5, I6, I7, I8, I9, I10} from "./images"
-import { Amplify, API } from 'aws-amplify';
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import NavBar from './NavBar';
+import YearSelector from './YearSelector';
+import Notes from './Notes';
+import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10 } from './images';
+import { Amplify } from 'aws-amplify';
+import { generateClient } from 'aws-amplify/api';
 import { listMessages } from './graphql/queries';
 import { createMessage as createMessageMutation } from './graphql/mutations';
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 import awsconfig from './aws-exports';
 import ImageUploading from 'react-images-uploading';
 import imageCompression from 'browser-image-compression';
@@ -25,35 +26,36 @@ import 'react-photo-view/dist/react-photo-view.css';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 Amplify.configure(awsconfig);
+const client = generateClient();
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        minHeight: "100%",
+        minHeight: '100%'
     },
     add: {
-        position: "fixed",
+        position: 'fixed',
         bottom: 0,
         right: 0,
-        margin: "40px",
+        margin: '40px'
     },
     extendedIcon: {
-        marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1)
     },
     iconText: {
-        paddingLeft: "10px",
-        paddingTop: "5px"
+        paddingLeft: '10px',
+        paddingTop: '5px'
     },
     imageWrapper: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 }));
 
 const initialFormState = { name: '', description: '', image: '' };
 
-export default function App() {
-    const classes = useStyles()
+export default function App () {
+    const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
@@ -63,16 +65,16 @@ export default function App() {
     const maxNumber = 1;
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
-    function dataURLtoFile(dataurl, filename) {
-        var arr = dataurl.split(','),
-            mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[arr.length - 1]), 
-            n = bstr.length, 
-            u8arr = new Uint8Array(n);
-        while(n--){
+    function dataURLtoFile (dataurl, filename) {
+        var arr = dataurl.split(',');
+        var mime = arr[0].match(/:(.*?);/)[1];
+        var bstr = atob(arr[arr.length - 1]);
+        var n = bstr.length;
+        var u8arr = new Uint8Array(n);
+        while (n--) {
             u8arr[n] = bstr.charCodeAt(n);
         }
-        return new File([u8arr], filename, {type:mime});
+        return new File([u8arr], filename, { type: mime });
     }
 
     const handleClickOpen = () => {
@@ -93,47 +95,43 @@ export default function App() {
             console.log(`originalFile size ${imageOg.size / 1024 / 1024} MB`);
 
             const options = {
-            maxSizeMB: 0.3,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true
-            }
-            try {
-            const compressedFile = await imageCompression(imageOg, options);
-            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-            const reader = new FileReader();
-            reader.readAsDataURL(compressedFile);
-            reader.onload = function () {
-                const base64String = reader.result;
-                console.log(base64String); // Prints the Base64 string
-                setFormData({ ...formData, 'image': base64String});
+                maxSizeMB: 0.3,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
             };
+            try {
+                const compressedFile = await imageCompression(imageOg, options);
+                console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+                console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+                const reader = new FileReader();
+                reader.readAsDataURL(compressedFile);
+                reader.onload = function () {
+                    const base64String = reader.result;
+                    console.log(base64String); // Prints the Base64 string
+                    setFormData({ ...formData, 'image': base64String });
+                };
             } catch (error) {
                 console.log(error);
-            } 
+            }
         }
     };
 
-    const onImageRemove = (index) => {
-        setImage([]);
-    }
-
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         if (!formData.name || !formData.description) return;
-        await API.graphql({ query: createMessageMutation, variables: { input: formData } });
-        formData["createdAt"] = new Date();
+        await client.graphql({ query: createMessageMutation, variables: { input: formData } });
+        formData['createdAt'] = new Date();
         setNotes([ ...notes, formData ]);
         setFormData(initialFormState);
         setImage([]);
         setOpen(false);
     };
 
-    const fetchNotes = async() => {
-        setLoading(true)
-        const apiData = await API.graphql({ query: listMessages, variables: { limit: 500 } });
-        setLoading(false)
+    const fetchNotes = async () => {
+        setLoading(true);
+        const apiData = await client.graphql({ query: listMessages, variables: { limit: 500 } });
+        setLoading(false);
         await setNotes(apiData.data.listMessages.items);
-    }
+    };
 
     useEffect(() => {
         fetchNotes().then();
@@ -142,7 +140,7 @@ export default function App() {
     const filterNotes = (note) => {
         let noteCreated = new Date(note.createdAt);
         return noteCreated.getFullYear() === selectedYear;
-    }
+    };
 
     const pickBackgroundImage = () => {
         switch (selectedYear) {
@@ -159,13 +157,13 @@ export default function App() {
             default:
                 return isTabletOrMobile ? I2 : I1;
         }
-    }
+    };
 
     return (
         <div className={classes.root} id="root">
-            <div className={classes.canvas} id={"canvas"} style={{
+            <div className={classes.canvas} id={'canvas'} style={{
                 backgroundImage: `url(${pickBackgroundImage()})`,
-                backgroundSize: "cover",
+                backgroundSize: 'cover',
                 opacity: 0.5,
                 top: 0,
                 left: 0,
@@ -173,7 +171,7 @@ export default function App() {
                 right: 0,
                 position: 'fixed',
                 zIndex: -1,
-                backgroundPositionX: "center"
+                backgroundPositionX: 'center'
             }}/>
             <CssBaseline/>
             <NavBar />
@@ -196,7 +194,7 @@ export default function App() {
                         label="Note"
                         fullWidth
                         multiline
-                        onChange={e => setFormData({ ...formData, 'description': e.target.value})}
+                        onChange={e => setFormData({ ...formData, 'description': e.target.value })}
                     />
                     <TextField
                         margin="dense"
@@ -204,7 +202,7 @@ export default function App() {
                         label="Name"
                         type="name"
                         fullWidth
-                        onChange={e => setFormData({ ...formData, 'name': e.target.value})}
+                        onChange={e => setFormData({ ...formData, 'name': e.target.value })}
                     />
                     <DialogContentText>
                         Enter your name, nickname or however you want Tanya to remember you.
@@ -216,36 +214,36 @@ export default function App() {
                         dataURLKey="data_url"
                     >
                         {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps,
+                            imageList,
+                            onImageUpload,
+                            onImageRemoveAll,
+                            onImageUpdate,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
                         }) => (
                         // write your building UI
-                        <div className="upload__image-wrapper">
-                            <Button
-                            style={isDragging ? { color: 'red' } : {paddingLeft: "0"}}
-                            onClick={onImageUpload}
-                            {...dragProps}
-                            >
-                            <AddAPhotoIcon/> <p className={classes.iconText}> Add a pic to share your favorite moment with Tanya! </p>
-                            </Button>
-                            {imageList.map((image, index) => (
-                            <div key={index} className={[classes.imageWrapper, "image-item"].join(" ")}>
-                                <img src={image['data_url']} alt="" width="100" />
-                                <div className="image-item__btn-wrapper">
-                                <Button onClick={() => onImageUpdate(index)}>Change</Button>
-                                <Button onClick={() => {
-                                    setImage([]);
-                                    onImageRemove(index)
-                                }}>Remove</Button>
-                                </div>
+                            <div className="upload__image-wrapper">
+                                <Button
+                                    style={isDragging ? { color: 'red' } : { paddingLeft: '0' }}
+                                    onClick={onImageUpload}
+                                    {...dragProps}
+                                >
+                                    <AddAPhotoIcon/> <p className={classes.iconText}> Add a pic to share your favorite moment with Tanya! (Optional)</p>
+                                </Button>
+                                {imageList.map((image, index) => (
+                                    <div key={index} className={[classes.imageWrapper, 'image-item'].join(' ')}>
+                                        <img src={image['data_url']} alt="" width="100" />
+                                        <div className="image-item__btn-wrapper">
+                                            <Button onClick={() => onImageUpdate(index)}>Change</Button>
+                                            <Button onClick={() => {
+                                                setImage([]);
+                                                onImageRemove(index);
+                                            }}>Remove</Button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                            ))}
-                        </div>
                         )}
                     </ImageUploading>
                 </DialogContent>

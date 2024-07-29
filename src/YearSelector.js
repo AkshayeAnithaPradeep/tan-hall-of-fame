@@ -1,46 +1,49 @@
 import React from 'react';
-import { makeStyles} from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import CheeseImage from './cheese.jpg';
-import Button from "@material-ui/core/Button";
+import Button from '@mui/material/Button';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         backgroundImage: `url(${CheeseImage})`,
-        borderBottom: "5px groove red",
-        position: "fixed",
-        width: "100%",
+        borderBottom: '5px groove red',
+        position: 'fixed',
+        width: '100%',
         zIndex: 10,
         top: 77,
         [theme.breakpoints.down(572)]: {
-            top: 43,
+            top: 43
         }
     },
     selected: {
-        backgroundColor: "white",
+        backgroundColor: 'white',
         '&:hover': {
-            backgroundColor: "white"
+            backgroundColor: 'white'
         }
     },
+    yearButton: {
+        color: 'black'
+    },
     buttonContainer: {
-        width: "100%",
-        margin: "auto",
+        width: '100%',
+        margin: 'auto',
         padding: 5,
-        display: "flex",
-        justifyContent: "space-evenly"
+        display: 'flex',
+        justifyContent: 'space-evenly'
     },
     title: {
         flexGrow: 1,
-        textAlign: "center"
+        textAlign: 'center'
     }
 }));
 
-export default function YearSelector(props) {
+export default function YearSelector (props) {
     const classes = useStyles();
 
     const handleClick = (year) => {
         props.setSelectedYear(year);
-    }
+    };
 
     return (
         <div className={classes.root}>

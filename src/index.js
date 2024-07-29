@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import pink from '@material-ui/core/colors/pink';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { indigo, pink } from '@mui/material/colors';
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
-        type: 'light',
+        mode: 'light',
         primary: {
-            main: blue[500],
+            main: indigo[500]
         },
         secondary: {
-            main: pink["A400"],
-        },
+            main: pink['A400']
+        }
     },
     typography: {
         h2: {
@@ -27,12 +26,14 @@ const theme = createMuiTheme({
         subtitle2: {
             fontFamily: "'Pacifico', cursive"
         }
-    },
+    }
 });
 
-function AppWithTheme() {
+function AppWithTheme () {
     return (
-        <ThemeProvider theme={theme}><App/></ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}><App/></ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 
