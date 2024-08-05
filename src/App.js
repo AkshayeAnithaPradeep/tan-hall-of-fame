@@ -95,7 +95,7 @@ export default function App () {
             console.log(`originalFile size ${imageOg.size / 1024 / 1024} MB`);
 
             const options = {
-                maxSizeMB: 0.3,
+                maxSizeMB: 0.2,
                 maxWidthOrHeight: 1920,
                 useWebWorker: true
             };
