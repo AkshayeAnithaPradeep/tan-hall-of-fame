@@ -126,11 +126,17 @@ export default function App () {
         setOpen(false);
     };
 
-    const fetchNotes = async () => {
+    const fetchNotes = async (existingNotes = [], nextToken = '') => {
         setLoading(true);
-        const apiData = await client.graphql({ query: listMessages, variables: { limit: 1000 } });
-        setLoading(false);
-        await setNotes(apiData.data.listMessages.items);
+        const apiData = nextToken ? await client.graphql({ query: listMessages, variables: { limit: 1000, nextToken } })
+            : await client.graphql({ query: listMessages, variables: { limit: 1000 } });
+        existingNotes = [...existingNotes, ...apiData.data.listMessages.items];
+        if (apiData.data.listMessages.nextToken) {
+            await fetchNotes(existingNotes, apiData.data.listMessages.nextToken);
+        } else {
+            await setNotes(existingNotes);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
