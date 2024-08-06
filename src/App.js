@@ -128,7 +128,7 @@ export default function App () {
 
     const fetchNotes = async () => {
         setLoading(true);
-        const apiData = await client.graphql({ query: listMessages, variables: { limit: 500 } });
+        const apiData = await client.graphql({ query: listMessages, variables: { limit: 1000 } });
         setLoading(false);
         await setNotes(apiData.data.listMessages.items);
     };
