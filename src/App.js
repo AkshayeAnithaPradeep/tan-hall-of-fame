@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NavBar from './NavBar';
 import YearSelector from './YearSelector';
@@ -13,7 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10 } from './images';
+import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12 } from './images';
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/api';
 import { listMessages } from './graphql/queries';
@@ -25,42 +25,60 @@ import imageCompression from 'browser-image-compression';
 import 'react-photo-view/dist/react-photo-view.css';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
-Amplify.configure(awsconfig);
-const client = generateClient();
+const PREFIX = 'App';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
+const classes = {
+    root: `${PREFIX}-root`,
+    add: `${PREFIX}-add`,
+    extendedIcon: `${PREFIX}-extendedIcon`,
+    iconText: `${PREFIX}-iconText`,
+    imageWrapper: `${PREFIX}-imageWrapper`
+};
+
+const Root = styled('div')((
+    {
+        theme
+    }
+) => ({
+    [`&.${classes.root}`]: {
         minHeight: '100%'
     },
-    add: {
+
+    [`& .${classes.add}`]: {
         position: 'fixed',
         bottom: 0,
         right: 0,
         margin: '40px'
     },
-    extendedIcon: {
+
+    [`& .${classes.extendedIcon}`]: {
         marginRight: theme.spacing(1)
     },
-    iconText: {
+
+    [`& .${classes.iconText}`]: {
         paddingLeft: '10px',
         paddingTop: '5px'
     },
-    imageWrapper: {
+
+    [`& .${classes.imageWrapper}`]: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     }
 }));
 
+Amplify.configure(awsconfig);
+const client = generateClient({ authMode: 'apiKey' });
+
 const initialFormState = { name: '', description: '', image: '' };
 
 export default function App () {
-    const classes = useStyles();
+
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
-    const [selectedYear, setSelectedYear] = useState(2024);
+    const [selectedYear, setSelectedYear] = useState(2025);
     const [image, setImage] = React.useState([]);
     const maxNumber = 1;
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
@@ -128,15 +146,15 @@ export default function App () {
 
     const fetchNotes = async (existingNotes = [], nextToken = '') => {
         setLoading(true);
-        const apiData = nextToken ? await client.graphql({ query: listMessages, variables: { limit: 1000, nextToken } })
-            : await client.graphql({ query: listMessages, variables: { limit: 1000 } });
-        existingNotes = [...existingNotes, ...apiData.data.listMessages.items];
-        if (apiData.data.listMessages.nextToken) {
-            await fetchNotes(existingNotes, apiData.data.listMessages.nextToken);
-        } else {
-            await setNotes(existingNotes);
-            setLoading(false);
-        }
+        // const apiData = nextToken ? await client.graphql({ query: listMessages, variables: { limit: 1000, nextToken } })
+        //     : await client.graphql({ query: listMessages, variables: { limit: 1000 } });
+        // existingNotes = [...existingNotes, ...apiData.data.listMessages.items];
+        // if (apiData.data.listMessages.nextToken) {
+        //     await fetchNotes(existingNotes, apiData.data.listMessages.nextToken);
+        // } else {
+        //     await setNotes(existingNotes);
+        //     setLoading(false);
+        // }
     };
 
     useEffect(() => {
@@ -150,6 +168,8 @@ export default function App () {
 
     const pickBackgroundImage = () => {
         switch (selectedYear) {
+            case 2025:
+                return isTabletOrMobile ? I11 : I12;
             case 2024:
                 return isTabletOrMobile ? I9 : I10;
             case 2023:
@@ -166,7 +186,7 @@ export default function App () {
     };
 
     return (
-        <div className={classes.root} id="root">
+        <Root className={classes.root} id="root">
             <div className={classes.canvas} id={'canvas'} style={{
                 backgroundImage: `url(${pickBackgroundImage()})`,
                 backgroundSize: 'cover',
@@ -229,7 +249,7 @@ export default function App () {
                             dragProps
                         }) => (
                         // write your building UI
-                            <div className="upload__image-wrapper">
+                            (<div className="upload__image-wrapper">
                                 <Button
                                     style={isDragging ? { color: 'red' } : { paddingLeft: '0' }}
                                     onClick={onImageUpload}
@@ -249,7 +269,7 @@ export default function App () {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </div>)
                         )}
                     </ImageUploading>
                 </DialogContent>
@@ -262,6 +282,6 @@ export default function App () {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Root>
     );
 }

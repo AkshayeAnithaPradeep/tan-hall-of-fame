@@ -1,10 +1,21 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import CheeseImage from './cheese.jpg';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
+const PREFIX = 'NavBar';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    title: `${PREFIX}-title`
+};
+
+const Root = styled('div')((
+    {
+        theme
+    }
+) => ({
+    [`&.${classes.root}`]: {
         flexGrow: 1,
         backgroundImage: `url(${CheeseImage})`,
         borderBottom: '5px groove red',
@@ -13,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 10,
         top: 0
     },
-    title: {
+
+    [`& .${classes.title}`]: {
         flexGrow: 1,
         textAlign: 'center',
         [theme.breakpoints.down(572)]: {
@@ -23,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar () {
-    const classes = useStyles();
+
 
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <Typography variant="h2" className={classes.title}>
                 Mac 'n' Cheese for Tanya
             </Typography>
-        </div>
+        </Root>
     );
 }

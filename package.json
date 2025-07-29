@@ -3,28 +3,29 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@emotion/core": "^10.1.1",
-    "@emotion/react": "^11.13.0",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^5.16.5",
-    "@mui/material": "^5.16.5",
-    "@mui/styles": "^5.16.5",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "aws-amplify": "^6.4.3",
-    "axios": ">=1.4.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@mui/styles": "6.4.8",
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.6.1 ",
+    "aws-amplify": "^6.15.4",
+    "axios": "^1.11.0",
     "browser-image-compression": "^2.0.2",
-    "framer-motion": "^10.15.0",
+    "framer-motion": "^10.18.0",
     "react": "^18.2.0",
     "react-audio-player": "^0.17.0",
     "react-dom": "^18.2.0",
     "react-images-uploading": "^3.1.7",
-    "react-photo-view": "^1.2.6",
-    "react-refresh": "^0.11.0",
+    "react-photo-view": "^1.2.4",
     "react-responsive": "^9.0.2",
     "react-scripts": "^5.0.1",
     "react-spinners": "^0.13.8"
+  },
+  "overrides": {
+    "react-refresh": "0.11.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@aws-amplify/ui-react": "^6.1.14"
+    "@aws-amplify/ui-react": "^6.11.2",
+    "sass": "^1.89.2"
   }
 }

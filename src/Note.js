@@ -1,5 +1,5 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import HeartImage from './love.png';
@@ -13,8 +13,25 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 
-const useStyles = makeStyles((theme) => ({
-    note: {
+const PREFIX = 'Note';
+
+const classes = {
+    note: `${PREFIX}-note`,
+    noteMessage: `${PREFIX}-noteMessage`,
+    noteAuthor: `${PREFIX}-noteAuthor`,
+    heart: `${PREFIX}-heart`,
+    actionItems: `${PREFIX}-actionItems`,
+    actionButton: `${PREFIX}-actionButton`,
+    imageWrapper: `${PREFIX}-imageWrapper`,
+    noteImage: `${PREFIX}-noteImage`
+};
+
+const StyledPaper = styled(Paper)((
+    {
+        theme
+    }
+) => ({
+    [`&.${classes.note}`]: {
         width: theme.spacing(50),
         margin: theme.spacing(2),
         display: 'flex',
@@ -30,39 +47,44 @@ const useStyles = makeStyles((theme) => ({
             width: theme.spacing(30)
         }
     },
-    noteMessage: {
+
+    [`& .${classes.noteMessage}`]: {
         flexGrow: 5,
         color: 'black',
         padding: `0 ${theme.spacing(2.5)}`,
         textAlign: 'center'
     },
-    noteAuthor: {
+
+    [`& .${classes.noteAuthor}`]: {
         flexGrow: 1,
         padding: theme.spacing(1),
         color: 'black'
     },
-    heart: {
+
+    [`& .${classes.heart}`]: {
         width: theme.spacing(2.5)
     },
-    actionItems: {
+
+    [`& .${classes.actionItems}`]: {
         flexGrow: 0.5,
         display: 'flex',
         justifyContent: 'flex-end'
     },
-    actionButton: {
+
+    [`& .${classes.actionButton}`]: {
         padding: theme.spacing(1)
     },
-    imageWrapper: {
+
+    [`& .${classes.imageWrapper}`]: {
     },
-    noteImage: {
+
+    [`& .${classes.noteImage}`]: {
         maxWidth: '400px',
         padding: '25px'
     }
 }));
 
 export default function Note (props) {
-    const classes = useStyles();
-
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -94,7 +116,7 @@ export default function Note (props) {
     }
 
     return (
-        <Paper elevation={3} className={classes.note}>
+        <StyledPaper elevation={3} className={classes.note}>
             <div className={classes.actionItems}>
                 <IconButton
                     aria-label="delete"
@@ -133,6 +155,6 @@ export default function Note (props) {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </Paper>
+        </StyledPaper>
     );
 }
