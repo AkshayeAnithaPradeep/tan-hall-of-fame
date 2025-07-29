@@ -1,19 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import { motion, useAnimate } from 'framer-motion';
-import { css } from '@emotion/react';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import { loadingCat } from './images';
 import Note from './Note';
 import meow from './audio/meow.mp3';
-// import './loadingCat.scss';
-const override = css`
-  margin-top: 129px;
-`;
 const PREFIX = 'Notes';
 
 const classes = {
     notes: `${PREFIX}-notes`,
+    loadingNotes: `${PREFIX}-loadingNotes`,
     title: `${PREFIX}-title`,
     cat: `${PREFIX}-cat`,
     catImageFlipped: `${PREFIX}-catImageFlipped`,
@@ -36,6 +31,19 @@ const Root = styled('div')((
         marginTop: theme.spacing(20),
         [theme.breakpoints.down(572)]: {
             marginTop: theme.spacing(12)
+        }
+    },
+
+    [`&.${classes.loadingNotes}`]: {
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        paddingBottom: theme.spacing(10),
+        marginTop: theme.spacing(16.125),
+        [theme.breakpoints.down(572)]: {
+            marginTop: theme.spacing(11.875)
         }
     },
 
@@ -115,19 +123,13 @@ export default function Notes (props) {
 
     if (props.loading) {
         return (
-            <Root className={classes.notes} css={override} ref={ref}>
+            <Root className={classes.loadingNotes} ref={ref}>
                 <img id="cat" className={classes.loadingCat} src={loadingCat} alt="Loading cat animation"/>
             </Root>
         );
     } else {
         return (
             <Root className={classes.notes} ref={ref}>
-                {/* <PulseLoader
-                css={override}
-                size={10}
-                color={'#f57f17'}
-                loading={props.loading}
-            /> */}
                 {props.notes.map((note, key) => <Note key={key} note={note}/>)}
                 <motion.div className={classes.cat} ref={scope} style={{ top: posY, WebkitTapHighlightColor: 'transparent' }} onClick={playMeow}>
                     <img id="cat" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif" alt="Walking cat animation"/>
