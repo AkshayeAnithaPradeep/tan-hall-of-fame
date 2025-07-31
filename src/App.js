@@ -13,6 +13,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import CheckIcon from '@mui/icons-material/Check';
 import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12 } from './images';
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/api';
@@ -32,7 +35,8 @@ const classes = {
     add: `${PREFIX}-add`,
     extendedIcon: `${PREFIX}-extendedIcon`,
     iconText: `${PREFIX}-iconText`,
-    imageWrapper: `${PREFIX}-imageWrapper`
+    imageWrapper: `${PREFIX}-imageWrapper`,
+    radioColor: `${PREFIX}-radioColor`
 };
 
 const Root = styled('div')((
@@ -64,16 +68,21 @@ const Root = styled('div')((
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+
+    [`& .${classes.radioColor}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 }));
 
 Amplify.configure(awsconfig);
 const client = generateClient({ authMode: 'apiKey' });
 
-const initialFormState = { name: '', description: '', image: '' };
+const initialFormState = { name: '', description: '', image: '', color: '#ead454', icon: 'heart' };
 
 export default function App () {
-
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
@@ -222,6 +231,9 @@ export default function App () {
                         multiline
                         onChange={e => setFormData({ ...formData, 'description': e.target.value })}
                     />
+                    <DialogContentText>
+                        Enter your name, nickname or however you want Tanya to remember you.
+                    </DialogContentText>
                     <TextField
                         margin="dense"
                         id="name"
@@ -231,8 +243,65 @@ export default function App () {
                         onChange={e => setFormData({ ...formData, 'name': e.target.value })}
                     />
                     <DialogContentText>
-                        Enter your name, nickname or however you want Tanya to remember you.
+                        Customize your note!
                     </DialogContentText>
+                    <ToggleButtonGroup
+                        value={formData.color}
+                        exclusive
+                        fullWidth
+                        size="large"
+                        onChange={e => setFormData({ ...formData, 'color': e.target.value })}
+                        aria-label="Platform"
+                    >
+                        <ToggleButton value="#ead454" sx={{
+                            backgroundColor: '#ead454',
+                            '&.Mui-selected': {
+                                backgroundColor: '#ead454',
+                                '&:hover': {
+                                    backgroundColor: '#ead454'
+                                }
+                            },
+                            '&:hover': {
+                                backgroundColor: '#ead454'
+                            }
+                        }}><CheckIcon sx={{ visibility: formData.color === '#ead454' ? 'visible' : 'hidden' }}></CheckIcon></ToggleButton>
+                        <ToggleButton value="#b6d7a8" sx={{
+                            backgroundColor: '#b6d7a8',
+                            '&.Mui-selected': {
+                                backgroundColor: '#b6d7a8',
+                                '&:hover': {
+                                    backgroundColor: '#b6d7a8'
+                                }
+                            },
+                            '&:hover': {
+                                backgroundColor: '#b6d7a8'
+                            }
+                        }}><CheckIcon sx={{ visibility: formData.color === '#b6d7a8' ? 'visible' : 'hidden' }}></CheckIcon></ToggleButton>
+                        <ToggleButton value="#eca2c4" sx={{
+                            backgroundColor: '#eca2c4',
+                            '&.Mui-selected': {
+                                backgroundColor: '#eca2c4',
+                                '&:hover': {
+                                    backgroundColor: '#eca2c4'
+                                }
+                            },
+                            '&:hover': {
+                                backgroundColor: '#eca2c4'
+                            }
+                        }}><CheckIcon sx={{ visibility: formData.color === '#eca2c4' ? 'visible' : 'hidden' }}></CheckIcon></ToggleButton>
+                        <ToggleButton value="#b1d3f6" sx={{
+                            backgroundColor: '#b1d3f6',
+                            '&.Mui-selected': {
+                                backgroundColor: '#b1d3f6',
+                                '&:hover': {
+                                    backgroundColor: '#b1d3f6'
+                                }
+                            },
+                            '&:hover': {
+                                backgroundColor: '#b1d3f6'
+                            }
+                        }}><CheckIcon sx={{ visibility: formData.color === '#b1d3f6' ? 'visible' : 'hidden' }}></CheckIcon></ToggleButton>
+                    </ToggleButtonGroup>
                     <ImageUploading
                         value={image}
                         onChange={onImageChange}

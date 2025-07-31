@@ -38,7 +38,6 @@ const StyledPaper = styled(Paper)((
         margin: theme.spacing(2),
         display: 'flex',
         flexFlow: 'column nowrap',
-        backgroundColor: '#ead454',
         [theme.breakpoints.down(800)]: {
             width: theme.spacing(38)
         },
@@ -123,7 +122,9 @@ export default function Note (props) {
     }
 
     return (
-        <StyledPaper elevation={3} className={classes.note}>
+        <StyledPaper elevation={3} className={classes.note} sx={{
+            backgroundColor: props.note.color || '#ead454'
+        }}>
             <div className={classes.actionItems}>
                 <IconButton
                     aria-label="delete"
