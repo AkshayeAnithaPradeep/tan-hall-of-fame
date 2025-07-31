@@ -11,7 +11,8 @@ import I10 from './10.jpg';
 import I11 from './11.jpg';
 import I12 from './12.jpg';
 import loadingCat from './loadingCat.gif';
+import whatsappImage from './whatsapp.png'
 
 export {
-    I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, loadingCat
+    I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, loadingCat, whatsappImage
 };

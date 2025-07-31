@@ -12,6 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import { whatsappImage } from './images';
 
 const PREFIX = 'Note';
 
@@ -23,7 +24,8 @@ const classes = {
     actionItems: `${PREFIX}-actionItems`,
     actionButton: `${PREFIX}-actionButton`,
     imageWrapper: `${PREFIX}-imageWrapper`,
-    noteImage: `${PREFIX}-noteImage`
+    noteImage: `${PREFIX}-noteImage`,
+    whatsapp: `${PREFIX}-whatsapp`
 };
 
 const StyledPaper = styled(Paper)((
@@ -81,6 +83,11 @@ const StyledPaper = styled(Paper)((
     [`& .${classes.noteImage}`]: {
         maxWidth: '400px',
         padding: '25px'
+    },
+
+    [`& .${classes.whatsapp}`]: {
+        height: '10px',
+        cursor: 'pointer'
     }
 }));
 
@@ -147,6 +154,7 @@ export default function Note (props) {
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Contact Akshaye to edit or delete a note.
+                        <a aria-label="Chat on WhatsApp" href="https://wa.me/9794227335"><img className={classes.whatsapp} alt="Chat on WhatsApp" src={whatsappImage}/></a>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

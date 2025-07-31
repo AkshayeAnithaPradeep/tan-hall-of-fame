@@ -11,6 +11,8 @@ export const createMessage = /* GraphQL */ `
       name
       description
       image
+      color
+      icon
       createdAt
       updatedAt
       __typename
@@ -27,6 +29,8 @@ export const updateMessage = /* GraphQL */ `
       name
       description
       image
+      color
+      icon
       createdAt
       updatedAt
       __typename
@@ -43,6 +47,8 @@ export const deleteMessage = /* GraphQL */ `
       name
       description
       image
+      color
+      icon
       createdAt
       updatedAt
       __typename
