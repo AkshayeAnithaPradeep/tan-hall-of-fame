@@ -20,9 +20,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CakeIcon from '@mui/icons-material/Cake';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import BedtimeIcon from '@mui/icons-material/Bedtime';
-import DiamondIcon from '@mui/icons-material/Diamond';
-import FilterVintageIcon from '@mui/icons-material/FilterVintage';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12 } from './images';
 import { Amplify } from 'aws-amplify';
@@ -322,9 +319,6 @@ export default function App () {
                         <ToggleButton value="cake"> <CakeIcon/> </ToggleButton>
                         <ToggleButton value="snow"> <AcUnitIcon/> </ToggleButton>
                         <ToggleButton value="song"> <MusicNoteIcon/> </ToggleButton>
-                        <ToggleButton value="moon"> <BedtimeIcon/> </ToggleButton>
-                        <ToggleButton value="diamond"> <DiamondIcon/> </ToggleButton>
-                        <ToggleButton value="flower"> <FilterVintageIcon/> </ToggleButton>
                         <ToggleButton value="star"> <StarRateIcon/> </ToggleButton>
                     </ToggleButtonGroup>
                     <ImageUploading
