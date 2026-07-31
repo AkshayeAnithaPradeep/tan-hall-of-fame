@@ -22,16 +22,14 @@ import AcUnitIcon from '@mui/icons-material/AcUnit';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12 } from './images';
-import { Amplify } from 'aws-amplify';
-import { generateClient } from 'aws-amplify/api';
-import { listMessages } from './graphql/queries';
-import { createMessage as createMessageMutation } from './graphql/mutations';
 import { useMediaQuery } from 'react-responsive';
-import awsconfig from './aws-exports';
-import ImageUploading from 'react-images-uploading';
+import ReactImageUploading from 'react-images-uploading';
+const ImageUploading = ReactImageUploading.default || ReactImageUploading;
 import imageCompression from 'browser-image-compression';
 import 'react-photo-view/dist/react-photo-view.css';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+
+const API_URL = 'https://qop32n6qtwcmpnj4cbkt4jevhy0qljvx.lambda-url.us-west-2.on.aws';
 
 const PREFIX = 'App';
 
@@ -82,9 +80,6 @@ const Root = styled('div')((
     }
 }));
 
-Amplify.configure(awsconfig);
-const client = generateClient({ authMode: 'apiKey' });
-
 const initialFormState = { name: '', description: '', image: '', color: '#ead454', icon: 'heart' };
 
 export default function App () {
@@ -92,7 +87,7 @@ export default function App () {
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
-    const [selectedYear, setSelectedYear] = useState(2025);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [image, setImage] = React.useState([]);
     const maxNumber = 1;
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
@@ -118,13 +113,9 @@ export default function App () {
     };
 
     const onImageChange = async (imageList, addUpdateIndex) => {
-        // data for submit
-        console.log(imageList, addUpdateIndex);
         setImage(imageList);
         if (imageList.length > 0) {
             const imageOg = dataURLtoFile(imageList[addUpdateIndex]['data_url']);
-            console.log('originalFile instanceof Blob', imageOg instanceof Blob); // true
-            console.log(`originalFile size ${imageOg.size / 1024 / 1024} MB`);
 
             const options = {
                 maxSizeMB: 0.2,
@@ -133,13 +124,10 @@ export default function App () {
             };
             try {
                 const compressedFile = await imageCompression(imageOg, options);
-                console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-                console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
                 const reader = new FileReader();
                 reader.readAsDataURL(compressedFile);
                 reader.onload = function () {
                     const base64String = reader.result;
-                    console.log(base64String); // Prints the Base64 string
                     setFormData({ ...formData, 'image': base64String });
                 };
             } catch (error) {
@@ -150,53 +138,60 @@ export default function App () {
 
     const handleSubmit = async () => {
         if (!formData.name || !formData.description) return;
-        await client.graphql({ query: createMessageMutation, variables: { input: formData } });
-        formData['createdAt'] = new Date();
-        setNotes([ ...notes, formData ]);
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        });
+        const newNote = await response.json();
+        setNotes([ ...notes, newNote ]);
         setFormData(initialFormState);
         setImage([]);
         setOpen(false);
     };
 
-    const fetchNotes = async (existingNotes = [], nextToken = '') => {
+    const fetchNotes = async () => {
         setLoading(true);
-        const apiData = nextToken ? await client.graphql({ query: listMessages, variables: { limit: 1000, nextToken } })
-            : await client.graphql({ query: listMessages, variables: { limit: 1000 } });
-        existingNotes = [...existingNotes, ...apiData.data.listMessages.items];
-        if (apiData.data.listMessages.nextToken) {
-            await fetchNotes(existingNotes, apiData.data.listMessages.nextToken);
-        } else {
-            await setNotes(existingNotes);
-            setLoading(false);
-        }
+        const allItems = [];
+        let nextToken = null;
+
+        do {
+            const url = nextToken ? `${API_URL}?nextToken=${encodeURIComponent(nextToken)}` : API_URL;
+            const response = await fetch(url);
+            const data = await response.json();
+            allItems.push(...data.items);
+            nextToken = data.nextToken;
+        } while (nextToken);
+
+        setNotes(allItems);
+        setLoading(false);
     };
 
     useEffect(() => {
-        fetchNotes().then();
+        fetchNotes();
     }, []);
+
+    const years = [...new Set(notes.map(n => new Date(n.createdAt).getFullYear()))]
+        .sort((a, b) => b - a);
 
     const filterNotes = (note) => {
         let noteCreated = new Date(note.createdAt);
         return noteCreated.getFullYear() === selectedYear;
     };
 
+    const backgrounds = [
+        { mobile: I2, desktop: I1 },
+        { mobile: I4, desktop: I3 },
+        { mobile: I6, desktop: I5 },
+        { mobile: I7, desktop: I8 },
+        { mobile: I9, desktop: I10 },
+        { mobile: I11, desktop: I12 },
+    ];
+
     const pickBackgroundImage = () => {
-        switch (selectedYear) {
-            case 2025:
-                return isTabletOrMobile ? I11 : I12;
-            case 2024:
-                return isTabletOrMobile ? I9 : I10;
-            case 2023:
-                return isTabletOrMobile ? I7 : I8;
-            case 2022:
-                return isTabletOrMobile ? I6 : I5;
-            case 2021:
-                return isTabletOrMobile ? I4 : I3;
-            case 2020:
-                return isTabletOrMobile ? I2 : I1;
-            default:
-                return isTabletOrMobile ? I2 : I1;
-        }
+        const yearIndex = years.length > 0 ? years.indexOf(selectedYear) : 0;
+        const bg = backgrounds[yearIndex % backgrounds.length] || backgrounds[0];
+        return isTabletOrMobile ? bg.mobile : bg.desktop;
     };
 
     return (
@@ -215,7 +210,7 @@ export default function App () {
             }}/>
             <CssBaseline/>
             <NavBar />
-            <YearSelector selectedYear={selectedYear} setSelectedYear={setSelectedYear}/>
+            <YearSelector selectedYear={selectedYear} setSelectedYear={setSelectedYear} years={years}/>
             <Notes notes={notes.filter(filterNotes)} loading={loading}/>
             <Fab variant="extended" color="primary" aria-label="add" className={classes.add} onClick={handleClickOpen}>
                 <AddIcon className={classes.extendedIcon} />
@@ -336,7 +331,6 @@ export default function App () {
                             isDragging,
                             dragProps
                         }) => (
-                        // write your building UI
                             (<div className="upload__image-wrapper">
                                 <Button
                                     style={isDragging ? { color: 'red' } : { paddingLeft: '0' }}

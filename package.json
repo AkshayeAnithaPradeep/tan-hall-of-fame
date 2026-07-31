@@ -1,54 +1,28 @@
 {
   "name": "tanhof",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.2.0",
-    "@mui/material": "^7.2.0",
-    "@mui/styles": "6.4.8",
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/user-event": "^14.6.1 ",
-    "aws-amplify": "^6.15.4",
-    "axios": "^1.11.0",
+    "@mui/icons-material": "^9.2.0",
+    "@mui/material": "^9.2.0",
     "browser-image-compression": "^2.0.2",
-    "framer-motion": "^10.18.0",
-    "react": "^18.2.0",
-    "react-audio-player": "^0.17.0",
-    "react-dom": "^18.2.0",
+    "framer-motion": "^12.42.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-images-uploading": "^3.1.7",
-    "react-photo-view": "^1.2.4",
-    "react-responsive": "^9.0.2",
-    "react-scripts": "^5.0.1",
-    "react-spinners": "^0.13.8"
-  },
-  "overrides": {
-    "react-refresh": "0.11.0"
+    "react-photo-view": "^1.2.7",
+    "react-responsive": "^10.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "@aws-amplify/ui-react": "^6.11.2"
+    "@vitejs/plugin-react": "^6.0.4",
+    "vite": "^8.1.5"
   }
 }
