@@ -1,83 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { styled } from '@mui/material/styles';
 import { motion, useAnimate } from 'framer-motion';
 import { loadingCat } from './images';
 import Note from './Note';
 import meow from './audio/meow.mp3';
-const PREFIX = 'Notes';
 
-const classes = {
-    notes: `${PREFIX}-notes`,
-    loadingNotes: `${PREFIX}-loadingNotes`,
-    title: `${PREFIX}-title`,
-    cat: `${PREFIX}-cat`,
-    catImageFlipped: `${PREFIX}-catImageFlipped`,
-    catImage: `${PREFIX}-catImage`,
-    loadingCat: `${PREFIX}-loadingCat`
-};
-
-const Root = styled('div')((
-    {
-        theme
-    }
-) => ({
-    [`&.${classes.notes}`]: {
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        paddingBottom: theme.spacing(10),
-        marginTop: theme.spacing(20),
-        [theme.breakpoints.down(572)]: {
-            marginTop: theme.spacing(12)
-        }
-    },
-
-    [`&.${classes.loadingNotes}`]: {
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        paddingBottom: theme.spacing(10),
-        marginTop: theme.spacing(16.125),
-        [theme.breakpoints.down(572)]: {
-            marginTop: theme.spacing(11.875)
-        }
-    },
-
-    [`& .${classes.title}`]: {
-        flexGrow: 1,
-        textAlign: 'center'
-    },
-
-    [`& .${classes.cat}`]: {
-        position: 'absolute',
-        left: 0,
-        top: 50,
-        '&:hover': {
-            cursor: 'pointer'
-        }
-    },
-
-    [`& .${classes.catImageFlipped}`]: {
-        transform: 'rotateY(180deg)'
-    },
-
-    [`& .${classes.catImage}`]: {
-        transform: 'rotateY(0deg)'
-    },
-
-    [`& .${classes.loadingCat}`]: {
-        margin: '0 auto',
-        transform: 'rotate(180deg)'
-    }
-}));
-
-export default function Notes (props) {
+export default function Notes(props) {
     const [height, setHeight] = useState(0);
-    // eslint-disable-next-line no-unused-vars
     const [posY, setPosY] = useState('100px');
     const [scope, animate] = useAnimate();
     const ref = useRef(null);
@@ -85,9 +13,12 @@ export default function Notes (props) {
     useEffect(() => {
         if (!props.loading) {
             setHeight(ref.current.clientHeight);
-            let highest = -500; let lowest = window.innerWidth + (0.10 * window.innerWidth); let going = 'right';
+            let highest = -500;
+            let lowest = window.innerWidth + (0.10 * window.innerWidth);
+            let going = 'right';
             let posYTemp;
-            animate(scope.current, { x: [-500, window.innerWidth + (0.10 * window.innerWidth)] }, { repeat: Infinity,
+            animate(scope.current, { x: [-500, window.innerWidth + (0.10 * window.innerWidth)] }, {
+                repeat: Infinity,
                 duration: 20,
                 repeatType: 'mirror',
                 onUpdate: (latest) => {
@@ -97,7 +28,7 @@ export default function Notes (props) {
                         if (latest < highest) {
                             going = 'left';
                             highest = -500;
-                            cat.className = classes.catImageFlipped;
+                            cat.className = 'scale-x-[-1]';
                             posYTemp = `${Math.floor(Math.random() * height)}px`;
                             animate(scope.current, { y: posYTemp });
                         }
@@ -106,36 +37,44 @@ export default function Notes (props) {
                         if (latest > lowest) {
                             going = 'right';
                             lowest = window.innerWidth + (0.10 * window.innerWidth);
-                            cat.className = classes.catImage;
+                            cat.className = '';
                             posYTemp = `${Math.floor(Math.random() * height)}px`;
                             animate(scope.current, { y: posYTemp });
                         }
                     }
                     animate(scope.current);
-                } });
+                }
+            });
         }
     });
 
-    function playMeow () {
+    function playMeow() {
         var audio = document.getElementById('audio');
         audio.play();
     }
 
     if (props.loading) {
         return (
-            <Root className={classes.loadingNotes} ref={ref}>
-                <img id="cat" className={classes.loadingCat} src={loadingCat} alt="Loading cat animation"/>
-            </Root>
+            <div className="relative flex flex-wrap justify-around pb-10 mt-[80px]" ref={ref}>
+                <img id="cat" className="mx-auto rotate-180" src={loadingCat} alt="Loading cat animation" />
+            </div>
         );
     } else {
         return (
-            <Root className={classes.notes} ref={ref}>
-                {props.notes.map((note, key) => <Note key={key} note={note}/>)}
-                <motion.div className={classes.cat} ref={scope} style={{ top: posY, WebkitTapHighlightColor: 'transparent' }} onClick={playMeow}>
-                    <img id="cat" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif" alt="Walking cat animation"/>
-                </motion.div >
+            <div className="relative overflow-hidden pb-10 mt-[80px]" ref={ref}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-6 px-10 lg:gap-x-[80px]">
+                    {props.notes.map((note, key) => <Note key={key} note={note} />)}
+                </div>
+                <motion.div
+                    className="absolute left-0 top-[50px] hover:cursor-pointer"
+                    ref={scope}
+                    style={{ top: posY, WebkitTapHighlightColor: 'transparent' }}
+                    onClick={playMeow}
+                >
+                    <img id="cat" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif" alt="Walking cat animation" />
+                </motion.div>
                 <audio id="audio" src={meow}></audio>
-            </Root>
+            </div>
         );
     }
 }

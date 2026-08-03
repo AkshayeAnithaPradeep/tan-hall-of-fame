@@ -4,10 +4,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.2.0",
-    "@mui/material": "^9.2.0",
     "browser-image-compression": "^2.0.2",
     "framer-motion": "^12.42.2",
     "react": "^19.2.8",
@@ -22,7 +18,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "tailwindcss": "^4.3.3",
     "vite": "^8.1.5"
   }
 }
