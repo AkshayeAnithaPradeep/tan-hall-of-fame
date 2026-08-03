@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
+import Carousel from './Carousel';
 import Notes from './Notes';
-import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12 } from './images';
+import { I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14 } from './images';
 import { useMediaQuery } from 'react-responsive';
 import ReactImageUploading from 'react-images-uploading';
 const ImageUploading = ReactImageUploading.default || ReactImageUploading;
@@ -24,6 +25,7 @@ const ICONS = [
 
 export default function App() {
     const [open, setOpen] = useState(false);
+    const [showCarousel, setShowCarousel] = useState(true);
     const [loading, setLoading] = useState(true);
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState(initialFormState);
@@ -112,16 +114,19 @@ export default function App() {
     };
 
     const backgrounds = [
-        { mobile: I2, desktop: I1 },
-        { mobile: I4, desktop: I3 },
-        { mobile: I6, desktop: I5 },
-        { mobile: I7, desktop: I8 },
-        { mobile: I9, desktop: I10 },
-        { mobile: I11, desktop: I12 },
+        { mobile: I1, desktop: I2 },   // 2020
+        { mobile: I3, desktop: I4 },   // 2021
+        { mobile: I5, desktop: I6 },   // 2022
+        { mobile: I7, desktop: I8 },   // 2023
+        { mobile: I9, desktop: I10 },  // 2024
+        { mobile: I11, desktop: I12 }, // 2025
+        { mobile: I13, desktop: I14 }, // 2026
     ];
 
+    const BASE_YEAR = 2020;
+
     const pickBackgroundImage = () => {
-        const yearIndex = years.length > 0 ? years.indexOf(selectedYear) : 0;
+        const yearIndex = selectedYear - BASE_YEAR;
         const bg = backgrounds[yearIndex % backgrounds.length] || backgrounds[0];
         return isTabletOrMobile ? bg.mobile : bg.desktop;
     };
@@ -137,7 +142,9 @@ export default function App() {
                 setSelectedYear={setSelectedYear}
                 years={years}
                 onAddNote={() => setOpen(true)}
+                onShowCarousel={() => setShowCarousel(true)}
             />
+            {showCarousel && <Carousel onClose={() => setShowCarousel(false)} />}
             <Notes notes={notes.filter(filterNotes)} loading={loading} />
 
             {/* Dialog */}

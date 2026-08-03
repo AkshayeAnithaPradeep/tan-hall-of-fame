@@ -34,7 +34,7 @@ export default function Note(props) {
 
     if (hasImage) {
         return (
-            <div className="rounded-xl shadow-lg overflow-hidden bg-white flex flex-col">
+            <div className="w-[calc(25%-60px)] min-w-[280px] rounded-xl shadow-lg overflow-hidden bg-white flex flex-col">
                 <PhotoProvider>
                     <PhotoView src={props.note.image}>
                         <img
@@ -74,7 +74,7 @@ export default function Note(props) {
 
     return (
         <div
-            className="p-5 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
+            className="w-[calc(25%-60px)] min-w-[280px] p-5 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
             style={{
                 backgroundImage: getBackgroundIcon(props.note.icon),
                 backgroundBlendMode: 'overlay',

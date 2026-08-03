@@ -55,14 +55,14 @@ export default function Notes(props) {
 
     if (props.loading) {
         return (
-            <div className="relative flex flex-wrap justify-around pb-10 mt-[80px]" ref={ref}>
+            <div className="relative flex flex-wrap justify-around pb-10 mt-[100px]" ref={ref}>
                 <img id="cat" className="mx-auto rotate-180" src={loadingCat} alt="Loading cat animation" />
             </div>
         );
     } else {
         return (
-            <div className="relative overflow-hidden pb-10 mt-[80px]" ref={ref}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-6 px-10 lg:gap-x-[80px]">
+            <div className="relative overflow-hidden pb-10 mt-[100px] min-h-[60vh]" ref={ref}>
+                <div className="flex flex-wrap justify-center gap-x-8 gap-y-6 px-10 lg:gap-x-[80px]">
                     {props.notes.map((note, key) => <Note key={key} note={note} />)}
                 </div>
                 <motion.div
