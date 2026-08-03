@@ -15,7 +15,7 @@ export const handler = async (event) => {
 
   if (method === 'GET') {
     const params = event.queryStringParameters || {};
-    return listMessages(params.nextToken);
+    return listMessages(params.year);
   }
 
   if (method === 'POST') {
@@ -26,26 +26,29 @@ export const handler = async (event) => {
   return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
 };
 
-async function listMessages(nextToken) {
+async function listMessages(year) {
   const scanParams = {
     TableName: TABLE_NAME,
-    Limit: 50,
   };
 
-  if (nextToken) {
-    scanParams.ExclusiveStartKey = JSON.parse(Buffer.from(nextToken, 'base64url').toString());
+  if (year) {
+    scanParams.FilterExpression = 'begins_with(createdAt, :yearPrefix)';
+    scanParams.ExpressionAttributeValues = { ':yearPrefix': String(year) };
   }
 
-  const result = await ddb.send(new ScanCommand(scanParams));
+  const items = [];
+  let lastKey;
 
-  const response = {
-    items: result.Items,
-    nextToken: result.LastEvaluatedKey
-      ? Buffer.from(JSON.stringify(result.LastEvaluatedKey)).toString('base64url')
-      : null,
-  };
+  do {
+    if (lastKey) {
+      scanParams.ExclusiveStartKey = lastKey;
+    }
+    const result = await ddb.send(new ScanCommand(scanParams));
+    items.push(...result.Items);
+    lastKey = result.LastEvaluatedKey;
+  } while (lastKey);
 
-  return { statusCode: 200, headers, body: JSON.stringify(response) };
+  return { statusCode: 200, headers, body: JSON.stringify({ items }) };
 }
 
 async function createMessage({ name, description, image, color, icon }) {

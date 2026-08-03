@@ -28,34 +28,21 @@ export default function App() {
         setOpen(false);
     };
 
-    const fetchNotes = async () => {
+    const fetchNotes = async (year) => {
         setLoading(true);
-        const allItems = [];
-        let nextToken = null;
-
-        do {
-            const url = nextToken ? `${API_URL}?nextToken=${encodeURIComponent(nextToken)}` : API_URL;
-            const response = await fetch(url);
-            const data = await response.json();
-            allItems.push(...data.items);
-            nextToken = data.nextToken;
-        } while (nextToken);
-
-        setNotes(allItems);
+        const response = await fetch(`${API_URL}?year=${year}`);
+        const data = await response.json();
+        setNotes(data.items);
         setLoading(false);
     };
 
     useEffect(() => {
-        fetchNotes();
-    }, []);
+        fetchNotes(selectedYear);
+    }, [selectedYear]);
 
-    const years = [...new Set(notes.map(n => new Date(n.createdAt).getFullYear()))]
-        .sort((a, b) => b - a);
-
-    const filterNotes = (note) => {
-        let noteCreated = new Date(note.createdAt);
-        return noteCreated.getFullYear() === selectedYear;
-    };
+    const BASE_YEAR = 2020;
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: currentYear - BASE_YEAR + 1 }, (_, i) => currentYear - i);
 
     const backgrounds = [
         { mobile: I1, desktop: I2 },   // 2020
@@ -66,8 +53,6 @@ export default function App() {
         { mobile: I11, desktop: I12 }, // 2025
         { mobile: I13, desktop: I14 }, // 2026
     ];
-
-    const BASE_YEAR = 2020;
 
     const pickBackgroundImage = () => {
         const yearIndex = selectedYear - BASE_YEAR;
@@ -89,7 +74,7 @@ export default function App() {
                 onShowCarousel={() => setShowCarousel(true)}
             />
             {showCarousel && <Carousel onClose={() => setShowCarousel(false)} />}
-            <Notes notes={notes.filter(filterNotes)} loading={loading} />
+            <Notes notes={notes} loading={loading} />
             {open && <AddNoteDialog onClose={() => setOpen(false)} onSubmit={handleSubmit} />}
         </div>
     );
