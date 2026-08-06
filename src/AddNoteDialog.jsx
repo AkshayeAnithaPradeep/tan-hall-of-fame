@@ -17,6 +17,7 @@ export default function AddNoteDialog({ onClose, onSubmit }) {
     const [page, setPage] = useState(1);
     const [formData, setFormData] = useState({ name: '', description: '', image: '', color: '#ead454', icon: 'heart' });
     const [image, setImage] = useState([]);
+    const [submitting, setSubmitting] = useState(false);
 
     function dataURLtoFile(dataurl) {
         var arr = dataurl.split(',');
@@ -51,6 +52,8 @@ export default function AddNoteDialog({ onClose, onSubmit }) {
     const canAdvance = formData.name.trim() && formData.description.trim();
 
     const handleSubmit = () => {
+        if (submitting) return;
+        setSubmitting(true);
         onSubmit(formData);
     };
 
@@ -203,9 +206,10 @@ export default function AddNoteDialog({ onClose, onSubmit }) {
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="px-5 py-2 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                                disabled={submitting}
+                                className={`px-5 py-2 rounded-lg font-medium transition-colors ${submitting ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-white text-gray-900 hover:bg-gray-200'}`}
                             >
-                                Submit
+                                {submitting ? 'Submitting...' : 'Submit'}
                             </button>
                         </>
                     )}

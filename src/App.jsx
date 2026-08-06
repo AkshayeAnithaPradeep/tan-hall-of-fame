@@ -17,15 +17,19 @@ export default function App() {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
 
-    const handleSubmit = async (formData) => {
-        const response = await fetch(API_URL, {
+    const handleSubmit = (formData) => {
+        const optimisticNote = {
+            ...formData,
+            id: crypto.randomUUID(),
+            createdAt: new Date().toISOString(),
+        };
+        setNotes([optimisticNote, ...notes]);
+        setOpen(false);
+        fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
         });
-        const newNote = await response.json();
-        setNotes([...notes, newNote]);
-        setOpen(false);
     };
 
     const fetchNotes = async (year) => {
@@ -74,7 +78,7 @@ export default function App() {
                 onShowCarousel={() => setShowCarousel(true)}
             />
             {showCarousel && <Carousel onClose={() => setShowCarousel(false)} />}
-            <Notes notes={notes} loading={loading} />
+            <Notes notes={[...notes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))} loading={loading} />
             {open && <AddNoteDialog onClose={() => setOpen(false)} onSubmit={handleSubmit} />}
         </div>
     );
